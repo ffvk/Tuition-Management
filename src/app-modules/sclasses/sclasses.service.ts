@@ -1,26 +1,27 @@
-import { Injectable } from '@nestjs/common';
-import { Sclass } from './models/class/sclass';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { HelperService } from 'src/shared/helpers/helper/helper.service';
 import { InjectModel } from '@nestjs/mongoose';
+import { ErrorConstant } from 'src/constants/error';
+import { Sclass } from './models/sclass/sclass';
 
 @Injectable()
-export class SclassesService {
+export class SsclassesService {
   constructor(
-    @InjectModel('Sclasses')
-    private readonly classModel: Model<Sclass>,
+    @InjectModel('Ssclasses')
+    private readonly sclassModel: Model<Sclass>,
     private readonly helperService: HelperService,
   ) {}
 
   async get(query?: { [key: string]: any }) {
     let readQuery: { [key: string]: any } = {};
 
-    if (query.classId) {
-      readQuery._id = query.classId;
+    if (query.sclassId) {
+      readQuery._id = query.sclassId;
     }
     // for comma separated values, split it and use $in
-    if (query.classIds) {
-      readQuery._id = { $in: query.classIds.split(',') };
+    if (query.sclassIds) {
+      readQuery._id = { $in: query.sclassIds.split(',') };
     }
 
     // if (query.someId) {
@@ -62,7 +63,7 @@ export class SclassesService {
           .reduce((a: any, b: any) => ((a[b] = true), a), {})
       : {};
 
-    let classes = await this.classModel
+    let sclasses = await this.sclassModel
       .find(readQuery)
       .populate('virtualIdsField')
       .populate('idsField')
@@ -72,54 +73,48 @@ export class SclassesService {
       .populate(query.populate || '') // this is experimental field
       .exec();
 
-    let totalCount = await this.classModel.countDocuments(readQuery);
+    let totalCount = await this.sclassModel.countDocuments(readQuery);
 
     return {
       totalCount,
-      currentCount: classes.length,
-      classes: (classes.length && classes) || null,
+      currentCount: sclasses.length,
+      sclasses: (sclasses.length && sclasses) || null,
     };
   }
 
-
-
   async create(sclass: { [key: string]: any }) {
-    if (
-      !sclass.idField1 ||
-      !sclass.idField2
-    ) {
+    if (!sclass.className) {
       throw new BadRequestException({
         err: ErrorConstant.MISSING_FIELD,
-        msgVars: { field: idField1 or idField2 },
+        msgVars: { field: 'className' },
       });
     }
- 
+
     let foundSclass = await this.sclassModel
       .findOne({
-        field1: sclass.idField1,
-        field2: sclass.idField2,
+        field1: sclass.className,
       })
       .exec();
- 
+
     if (foundSclass) {
       throw new BadRequestException({
         err: ErrorConstant.DUPLICATE_ENTITY,
         msgVars: { entity: sclass },
       });
     }
- 
+
     let newSclass = new this.sclassModel(sclass);
- 
+
     let validationErrors = newSclass.validateSync();
- 
+
     if (validationErrors) {
       let error =
         validationErrors.errors[Object.keys(validationErrors.errors)[0]]
           .message;
- 
+
       throw new BadRequestException(this.helperService.getDbErr(error));
     }
- 
+
     try {
       return await newSclass.save();
     } catch (e) {
@@ -131,5 +126,47 @@ export class SclassesService {
       });
     }
   }
- 
+
+  async update(sclass: { [key: string]: any }) {
+    let foundSclass = await this.sclassModel
+      .findOne({
+        _id: sclass.sclassId,
+      })
+      .exec();
+
+    if (!foundSclass) {
+      throw new BadRequestException({
+        error: ErrorConstant.INVALID_FIELD,
+        msgVars: {
+          field: 'sclassId',
+        },
+      });
+    }
+
+    if (sclass.tutorId) {
+      foundSclass.tutorId = sclass.tutorId;
+    }
+
+    if (sclass.studentId) {
+      foundSclass.studentId = sclass.studentId;
+    }
+
+    if (sclass.className) {
+      foundSclass.className = sclass.className;
+    }
+
+    foundSclass.timestamp.updatedAt = new Date().getTime();
+
+    let validationErrors = foundSclass.validateSync();
+
+    if (validationErrors) {
+      let error =
+        validationErrors.errors[Object.keys(validationErrors.errors)[0]]
+          .message;
+
+      throw new BadRequestException(this.helperService.getDbErr(error));
+    }
+
+    return await foundSclass.save();
+  }
 }
