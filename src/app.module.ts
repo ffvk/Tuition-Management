@@ -12,6 +12,8 @@ import { PermissionGuard } from './shared/guards/permission/permission.guard';
 import { TokenGuard } from './shared/guards/token/token.guard';
 import { HelperService } from './shared/helpers/helper/helper.service';
 import { SharedModule } from './shared/shared.module';
+import { SclassesModule } from './app-modules/sclasses/sclasses.module';
+import { SclassModule } from './app-modules/sclass/sclass.module';
 import { HomeworksModule } from './app-modules/homeworks/homeworks.module';
 import { SubjectsModule } from './app-modules/subjects/subjects.module';
 import { ClassesModule } from './app-modules/classes/classes.module';
@@ -46,6 +48,8 @@ import { SharedModule } from './shared/shared.module';
     ClassesModule,
     SubjectsModule,
     HomeworksModule,
+    SclassModule,
+    SclassesModule,
   ],
   controllers: [AppController],
   providers: [
