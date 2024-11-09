@@ -6,7 +6,7 @@ import { ErrorConstant } from 'src/constants/error';
 import { Sclass } from './models/sclass/sclass';
 
 @Injectable()
-export class SsclassesService {
+export class SclassesService {
   constructor(
     @InjectModel('Ssclasses')
     private readonly sclassModel: Model<Sclass>,
