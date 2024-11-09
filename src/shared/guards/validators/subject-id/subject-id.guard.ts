@@ -1,24 +1,20 @@
 import {
-  BadRequestException,
   CanActivate,
   ExecutionContext,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { UsersService } from 'src/app-modules/users/users.service';
+import { Observable } from 'rxjs';
+import { SubjectsService } from 'src/app-modules/subjects/subjects.service';
 import { ErrorConstant } from 'src/constants/error';
 import { TicketModel } from 'src/shared/models/ticket-model/ticket-model';
 
 @Injectable()
-export class UserIdGuard implements CanActivate {
-  constructor(private readonly usersService: UsersService) {}
+export class SubjectIdGuard implements CanActivate {
+  constructor(private readonly subjectsService: SubjectsService) {}
 
   async canActivate(context: ExecutionContext) {
-    /**
-     * This confirms that the userId provided by the client is allowed for the client
-     * For that to happen, it needs to be validated against userId and restrictByParams
-     */
     const ctx = context.switchToHttp();
     let req = ctx.getRequest<Request>();
 
@@ -29,41 +25,46 @@ export class UserIdGuard implements CanActivate {
       });
     }
 
-    if (!req.body.userId) {
-      throw new BadRequestException({
+    if (!req.body.subjectId) {
+      throw new UnauthorizedException({
         error: ErrorConstant.MISSING_FIELD,
-        msgVars: { field: 'userId' },
+        msgVars: { field: 'subjectId' },
       });
     }
 
-    let query = {};
+    let query = {
+      subjectId: req.body.subjectId,
+      deleted: 'all',
+    };
 
     const { user, permission } = req['ticket'] as TicketModel;
 
     switch (permission.restriction) {
       // case 'organizationId': {
-      //   query['organizationId'] = String(user.organizationId);
+      //   query['$or'] = [
+      //     { offsetPrinterId: String(user.organizationId) },
+      //     { clientId: String(user.organizationId) },
+      //   ];
       //   break;
       // }
 
       case 'userId': {
-        query['userId'] = String(user._id);
+        query['creatorId'] = String(user._id);
         break;
       }
 
       default: {
-        query['userId'] = String(user._id);
         break;
       }
     }
 
-    let foundUser = await this.usersService.get(query);
+    let foundSubject = await this.subjectsService.get(query);
 
-    if (!foundUser || !foundUser.totalCount) {
+    if (!foundSubject || !foundSubject.totalCount) {
       throw new UnauthorizedException({
         error: ErrorConstant.INVALID_FIELD,
         msgVars: {
-          field: 'userId',
+          field: 'subjectId',
         },
       });
     }
@@ -72,7 +73,7 @@ export class UserIdGuard implements CanActivate {
       req['storage'] = {};
     }
 
-    req['storage']['user'] = foundUser.users[0];
+    req['storage']['subject'] = foundSubject.subjects[0];
 
     return true;
   }

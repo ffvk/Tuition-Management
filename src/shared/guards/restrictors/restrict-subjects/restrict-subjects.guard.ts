@@ -9,7 +9,7 @@ import { ErrorConstant } from 'src/constants/error';
 import { TicketModel } from 'src/shared/models/ticket-model/ticket-model';
 
 @Injectable()
-export class RestrictTokensGuard implements CanActivate {
+export class RestrictSubjectsGuard implements CanActivate {
   canActivate(context: ExecutionContext) {
     const ctx = context.switchToHttp();
     let req = ctx.getRequest<Request>();
@@ -25,7 +25,7 @@ export class RestrictTokensGuard implements CanActivate {
 
     switch (permission.restriction) {
       case 'userId': {
-        req.query.userId = String(user._id);
+        req.query.creatorId = String(user._id);
         break;
       }
 
