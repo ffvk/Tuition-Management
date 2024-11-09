@@ -1,7 +1,7 @@
-import { UpdateHomeworkDto } from './update-homework.dto';
+import { UpdateHomeworkDTO } from './update-homework.dto';
 
-describe('UpdateHomeworkDto', () => {
+describe('UpdateHomeworkDTO', () => {
   it('should be defined', () => {
-    expect(new UpdateHomeworkDto()).toBeDefined();
+    expect(new UpdateHomeworkDTO()).toBeDefined();
   });
 });

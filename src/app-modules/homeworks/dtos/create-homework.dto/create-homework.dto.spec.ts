@@ -1,7 +1,7 @@
-import { CreateHomeworkDto } from './create-homework.dto';
+import { CreateHomeworkDTO } from './create-homework.dto';
 
-describe('CreateHomeworkDto', () => {
+describe('CreateHomeworkDTO', () => {
   it('should be defined', () => {
-    expect(new CreateHomeworkDto()).toBeDefined();
+    expect(new CreateHomeworkDTO()).toBeDefined();
   });
 });

@@ -1,7 +1,7 @@
-import { GetHomeworksDto } from './get-homeworks.dto';
+import { GetHomeworksDTO } from './get-homeworks.dto';
 
-describe('GetHomeworksDto', () => {
+describe('GetHomeworksDTO', () => {
   it('should be defined', () => {
-    expect(new GetHomeworksDto()).toBeDefined();
+    expect(new GetHomeworksDTO()).toBeDefined();
   });
 });
