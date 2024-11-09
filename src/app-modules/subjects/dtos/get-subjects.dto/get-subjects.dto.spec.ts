@@ -1,7 +1,7 @@
-import { GetSubjectsDto } from './get-subjects.dto';
+import { GetSubjectsDTO } from './get-subjects.dto';
 
-describe('GetSubjectsDto', () => {
+describe('GetSubjectsDTO', () => {
   it('should be defined', () => {
-    expect(new GetSubjectsDto()).toBeDefined();
+    expect(new GetSubjectsDTO()).toBeDefined();
   });
 });

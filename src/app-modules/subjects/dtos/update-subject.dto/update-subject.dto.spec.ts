@@ -1,7 +1,7 @@
-import { UpdateSubjectDto } from './update-subject.dto';
+import { UpdateSubjectDTO } from './update-subject.dto';
 
-describe('UpdateSubjectDto', () => {
+describe('UpdateSubjectDTO', () => {
   it('should be defined', () => {
-    expect(new UpdateSubjectDto()).toBeDefined();
+    expect(new UpdateSubjectDTO()).toBeDefined();
   });
 });

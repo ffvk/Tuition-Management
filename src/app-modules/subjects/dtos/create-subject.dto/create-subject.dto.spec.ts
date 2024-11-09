@@ -1,7 +1,7 @@
-import { CreateSubjectDto } from './create-subject.dto';
+import { CreateSubjectDTO } from './create-subject.dto';
 
-describe('CreateSubjectDto', () => {
+describe('CreateSubjectDTO', () => {
   it('should be defined', () => {
-    expect(new CreateSubjectDto()).toBeDefined();
+    expect(new CreateSubjectDTO()).toBeDefined();
   });
 });

@@ -10,7 +10,11 @@ import {
 export class GetSclassesDTO {
   @IsMongoId()
   @IsOptional()
-  assetId: string;
+  sclassId: string;
+
+  @IsString()
+  @IsOptional()
+  sclassIds: string;
 
   @IsString()
   @IsOptional()
