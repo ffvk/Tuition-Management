@@ -1,7 +1,7 @@
-import { CreateTokenDto } from './create-token.dto';
+import { CreateTokenDTO } from './create-token.dto';
 
-describe('CreateTokenDto', () => {
+describe('CreateTokenDTO', () => {
   it('should be defined', () => {
-    expect(new CreateTokenDto()).toBeDefined();
+    expect(new CreateTokenDTO()).toBeDefined();
   });
 });

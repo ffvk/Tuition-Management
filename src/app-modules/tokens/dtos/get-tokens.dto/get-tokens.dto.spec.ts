@@ -1,7 +1,7 @@
-import { GetTokensDto } from './get-tokens.dto';
+import { GetTokensDTO } from './get-tokens.dto';
 
-describe('GetTokensDto', () => {
+describe('GetTokensDTO', () => {
   it('should be defined', () => {
-    expect(new GetTokensDto()).toBeDefined();
+    expect(new GetTokensDTO()).toBeDefined();
   });
 });

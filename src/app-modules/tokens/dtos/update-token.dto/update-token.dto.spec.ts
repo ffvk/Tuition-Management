@@ -1,7 +1,7 @@
-import { UpdateTokenDto } from './update-token.dto';
+import { UpdateTokenDTO } from './update-token.dto';
 
-describe('UpdateTokenDto', () => {
+describe('UpdateTokenDTO', () => {
   it('should be defined', () => {
-    expect(new UpdateTokenDto()).toBeDefined();
+    expect(new UpdateTokenDTO()).toBeDefined();
   });
 });
