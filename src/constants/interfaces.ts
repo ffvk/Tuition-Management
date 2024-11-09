@@ -61,6 +61,7 @@ export interface ITicket {
 export interface IRole {
   role: string;
   description?: string;
+  visible?: boolean;
   restrictBy?: string;
   childRoles?: string[];
 }
